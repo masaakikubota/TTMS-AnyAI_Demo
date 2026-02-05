@@ -370,7 +370,43 @@ window.MOCK_DATA = {
         positive: [68.2, 69.0, 69.5, 70.1, 70.8, 71.2, 71.8, 72.3],
         neutral:  [22.5, 22.0, 21.8, 21.5, 21.0, 20.8, 20.5, 20.2],
         negative: [ 9.3,  9.0,  8.7,  8.4,  8.2,  8.0,  7.7,  7.5]
-      }
+      },
+
+      // KOL content format — ratio = share of KOL content (%)
+      kolFormats: [
+        { format: 'Product Review',  ratio: 28.5, prevRatio: 26.2 },
+        { format: 'Tutorial/How-to', ratio: 22.1, prevRatio: 21.8 },
+        { format: 'LIVE Shopping',   ratio: 15.8, prevRatio: 14.5 },
+        { format: 'Comparison',      ratio: 12.4, prevRatio: 13.0 },
+        { format: 'Unboxing',        ratio:  9.2, prevRatio:  8.6 },
+        { format: 'Daily Routine',   ratio:  6.8, prevRatio:  7.2 },
+        { format: 'Challenge',       ratio:  3.4, prevRatio:  6.5 },
+        { format: 'Tips & Tricks',   ratio:  1.8, prevRatio:  2.2 }
+      ],
+
+      // Weekly KOL format mention count trend (8 weeks)
+      kolFormatsTrend: [
+        { format: 'Product Review',  data: [32, 34, 33, 36, 35, 38, 37, 40] },
+        { format: 'Tutorial/How-to', data: [24, 26, 25, 28, 27, 30, 29, 31] },
+        { format: 'LIVE Shopping',   data: [18, 22, 16, 24, 19, 23, 20, 25] },
+        { format: 'Comparison',      data: [14, 16, 15, 17, 16, 18, 17, 19] },
+        { format: 'Unboxing',        data: [10, 12, 11, 13, 10, 14, 12, 13] },
+        { format: 'Daily Routine',   data: [ 8,  7,  9,  8, 10,  7,  9,  8] },
+        { format: 'Challenge',       data: [ 4,  3,  5,  4,  6,  3,  5,  4] },
+        { format: 'Tips & Tricks',   data: [ 2,  3,  2,  3,  2,  3,  2,  3] }
+      ],
+
+      // Weekly KOL format comment sentiment (per format × per week)
+      kolFormatsCommentTrend: [
+        { format: 'Product Review',  positive: [42,44,46,48,45,50,48,52], neutral: [6,5,6,5,6,5,5,6], negative: [3,3,2,3,2,3,2,2] },
+        { format: 'Tutorial/How-to', positive: [36,38,37,40,39,42,41,44], neutral: [5,4,5,4,5,4,4,5], negative: [1,2,1,1,1,1,1,1] },
+        { format: 'LIVE Shopping',   positive: [22,28,20,30,24,29,25,32], neutral: [4,5,4,5,4,5,4,5], negative: [3,4,3,4,3,3,3,3] },
+        { format: 'Comparison',      positive: [16,18,17,19,18,20,19,22], neutral: [4,4,4,4,4,4,4,4], negative: [3,3,3,3,3,3,3,2] },
+        { format: 'Unboxing',        positive: [14,16,15,18,14,19,16,18], neutral: [2,2,2,2,2,2,2,2], negative: [1,1,1,0,1,0,1,0] },
+        { format: 'Daily Routine',   positive: [10,9,12,10,13,9,12,10],  neutral: [2,2,2,2,2,2,2,2], negative: [1,1,1,1,1,1,0,1] },
+        { format: 'Challenge',       positive: [5,4,6,5,7,4,6,5],        neutral: [1,1,1,1,1,1,1,1], negative: [0,0,0,0,0,0,0,0] },
+        { format: 'Tips & Tricks',   positive: [3,4,3,4,3,4,3,4],        neutral: [1,1,1,1,1,1,1,1], negative: [0,0,0,0,0,0,0,0] }
+      ]
     },
 
     // -----------------------------------------------------------------------
@@ -778,7 +814,43 @@ window.MOCK_DATA = {
         positive: [65.0, 65.3, 65.8, 66.0, 66.4, 66.8, 67.2, 67.5],
         neutral:  [24.0, 23.8, 23.5, 23.3, 23.0, 22.8, 22.5, 22.3],
         negative: [11.0, 10.9, 10.7, 10.7, 10.6, 10.4, 10.3, 10.2]
-      }
+      },
+
+      // KOL content format — ratio = share of KOL content (%)
+      kolFormats: [
+        { format: 'Product Review',  ratio: 26.8, prevRatio: 25.0 },
+        { format: 'Tutorial/How-to', ratio: 20.5, prevRatio: 20.2 },
+        { format: 'LIVE Shopping',   ratio: 14.2, prevRatio: 13.8 },
+        { format: 'Comparison',      ratio: 13.5, prevRatio: 14.0 },
+        { format: 'Unboxing',        ratio:  8.8, prevRatio:  8.2 },
+        { format: 'Daily Routine',   ratio:  7.5, prevRatio:  7.8 },
+        { format: 'Challenge',       ratio:  4.8, prevRatio:  6.2 },
+        { format: 'Tips & Tricks',   ratio:  3.9, prevRatio:  4.8 }
+      ],
+
+      // Weekly KOL format mention count trend (8 weeks)
+      kolFormatsTrend: [
+        { format: 'Product Review',  data: [22, 24, 23, 26, 25, 28, 27, 29] },
+        { format: 'Tutorial/How-to', data: [18, 20, 19, 22, 21, 23, 22, 24] },
+        { format: 'LIVE Shopping',   data: [12, 16, 10, 18, 14, 17, 15, 19] },
+        { format: 'Comparison',      data: [12, 14, 13, 15, 14, 16, 15, 17] },
+        { format: 'Unboxing',        data: [ 8, 10,  9, 11,  8, 12, 10, 11] },
+        { format: 'Daily Routine',   data: [ 6,  7,  8,  7,  9,  6,  8,  7] },
+        { format: 'Challenge',       data: [ 4,  5,  4,  6,  5,  4,  6,  5] },
+        { format: 'Tips & Tricks',   data: [ 3,  4,  3,  4,  3,  4,  3,  4] }
+      ],
+
+      // Weekly KOL format comment sentiment (per format × per week)
+      kolFormatsCommentTrend: [
+        { format: 'Product Review',  positive: [30,32,31,34,33,36,35,38], neutral: [5,5,5,5,5,5,5,5], negative: [2,2,2,2,2,2,2,2] },
+        { format: 'Tutorial/How-to', positive: [26,28,27,30,29,32,30,33], neutral: [4,4,4,4,4,4,4,4], negative: [1,1,1,1,1,1,1,1] },
+        { format: 'LIVE Shopping',   positive: [15,20,13,22,18,21,19,24], neutral: [3,4,3,4,3,4,3,4], negative: [2,3,2,3,2,2,2,2] },
+        { format: 'Comparison',      positive: [14,16,15,17,16,18,17,20], neutral: [3,3,3,3,3,3,3,3], negative: [2,3,2,2,2,2,2,2] },
+        { format: 'Unboxing',        positive: [10,13,11,14,10,15,13,14], neutral: [2,2,2,2,2,2,2,2], negative: [1,1,1,0,1,0,1,0] },
+        { format: 'Daily Routine',   positive: [ 8, 9,10, 9,11, 8,10, 9], neutral: [2,2,2,2,2,2,2,2], negative: [1,1,1,1,1,1,0,1] },
+        { format: 'Challenge',       positive: [ 5, 6, 5, 7, 6, 5, 7, 6], neutral: [1,1,1,1,1,1,1,1], negative: [0,0,0,0,0,0,0,0] },
+        { format: 'Tips & Tricks',   positive: [ 4, 5, 4, 5, 4, 5, 4, 5], neutral: [1,1,1,1,1,1,1,1], negative: [0,0,0,0,0,0,0,0] }
+      ]
     },
 
     // -----------------------------------------------------------------------

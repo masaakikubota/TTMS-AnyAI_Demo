@@ -1,4 +1,4 @@
-// P5: Content Analysis (AnyAI) — Content + Correlation C1/C2
+// P5: Content Analysis (AnyAI) — Content + KOL Format + Correlation C1/C2
 window.ContentAnalysisPage = {
   render(category, container) {
     const data = window.MOCK_DATA[category].content;
@@ -15,6 +15,10 @@ window.ContentAnalysisPage = {
         ${this._scorecard('Top Appeal Axis', data.scorecards.topAxis.value, data.scorecards.topAxis.change)}
         ${this._scorecard('Engagement Rate', C.formatPercent(data.scorecards.engagementRate.value), data.scorecards.engagementRate.change)}
       </div>
+
+      <!-- ================================================================= -->
+      <!-- Appeal Axis Section                                               -->
+      <!-- ================================================================= -->
 
       <!-- Content Appeal Axes Horizontal Bar -->
       <div class="chart-card">
@@ -58,8 +62,6 @@ window.ContentAnalysisPage = {
                     const neu = r.neutral[i];
                     const total = p + neu + n;
                     const posRate = total > 0 ? p / total : 0;
-                    const negRate = total > 0 ? n / total : 0;
-                    // Color: interpolate green–yellow–red based on posRate
                     let bg;
                     if (posRate >= 0.8) {
                       const t = (posRate - 0.8) / 0.2;
@@ -88,6 +90,89 @@ window.ContentAnalysisPage = {
         <div class="chart-card-title">Sentiment Trend (Weekly)</div>
         <div class="chart-container" style="height:250px">
           <canvas id="chartSentimentTrend"></canvas>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- KOL Format Section                                                -->
+      <!-- ================================================================= -->
+      <div style="margin:36px 0 16px;padding:0 2px">
+        <div style="font-size:15px;font-weight:700;color:#3C459A;letter-spacing:0.3px;border-bottom:2px solid #3C459A;padding-bottom:6px">
+          KOL Format Analysis
+        </div>
+      </div>
+
+      <!-- KOL Format Ratio Horizontal Bar -->
+      <div class="chart-card">
+        <div class="chart-card-title">KOL Content Format &mdash; Ratio (%)</div>
+        <div class="chart-container" style="height:320px">
+          <canvas id="chartKolFormats"></canvas>
+        </div>
+      </div>
+
+      <!-- KOL Format Trend (line chart) -->
+      <div class="chart-card">
+        <div class="chart-card-title">KOL Format Trend (Weekly)</div>
+        <div class="chart-container" style="height:320px">
+          <canvas id="chartKolFormatTrend"></canvas>
+        </div>
+      </div>
+
+      <!-- KOL Format Sentiment Heatmap -->
+      <div class="table-card">
+        <div class="table-card-header">
+          <div class="table-title">KOL Format &mdash; Sentiment Heatmap</div>
+          <div class="heatmap-legend">
+            <span class="heatmap-legend-item"><span class="heatmap-swatch" style="background:#c62828"></span>Negative</span>
+            <span class="heatmap-legend-item"><span class="heatmap-swatch" style="background:#fff9c4"></span>Neutral</span>
+            <span class="heatmap-legend-item"><span class="heatmap-swatch" style="background:#2e7d32"></span>Positive</span>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table heatmap-table">
+            <thead>
+              <tr>
+                <th>Format</th>
+                ${weeks.map(w => '<th class="num">' + w + '</th>').join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${data.kolFormatsCommentTrend.map(r => {
+                return '<tr><td>' + r.format + '</td>'
+                  + r.positive.map((p, i) => {
+                    const n = r.negative[i];
+                    const neu = r.neutral[i];
+                    const total = p + neu + n;
+                    const posRate = total > 0 ? p / total : 0;
+                    let bg;
+                    if (posRate >= 0.8) {
+                      const t = (posRate - 0.8) / 0.2;
+                      bg = 'rgba(46,125,50,' + (0.15 + t * 0.35).toFixed(2) + ')';
+                    } else if (posRate >= 0.6) {
+                      const t = (posRate - 0.6) / 0.2;
+                      bg = 'rgba(46,125,50,' + (0.08 + t * 0.07).toFixed(2) + ')';
+                    } else {
+                      const t = (0.6 - posRate) / 0.6;
+                      bg = 'rgba(198,40,40,' + (0.10 + t * 0.40).toFixed(2) + ')';
+                    }
+                    return '<td class="num heatmap-cell" style="background:' + bg + '">'
+                      + '<div class="hm-total">' + total + '</div>'
+                      + '<div class="hm-detail">+' + p + ' -' + n + '</div>'
+                      + '</td>';
+                  }).join('')
+                  + '</tr>';
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- Correlation Section                                               -->
+      <!-- ================================================================= -->
+      <div style="margin:36px 0 16px;padding:0 2px">
+        <div style="font-size:15px;font-weight:700;color:#3C459A;letter-spacing:0.3px;border-bottom:2px solid #3C459A;padding-bottom:6px">
+          Correlation Analysis
         </div>
       </div>
 
@@ -174,10 +259,6 @@ window.ContentAnalysisPage = {
     ]);
 
     // Appeal Axis Mention Trend (line chart — all axes)
-    const TREND_COLORS = [
-      '#3C459A', '#F18B00', '#4CAF50', '#E91E63', '#00BCD4',
-      '#9C27B0', '#FF5722', '#607D8B', '#795548', '#8BC34A'
-    ];
     C.createLineChart('chartAppealTrend', weeks,
       data.appealAxesTrend.map(function(item, i) {
         return { label: item.axis, data: item.data, colorIndex: i };
@@ -190,6 +271,20 @@ window.ContentAnalysisPage = {
       { label: 'Neutral', data: data.sentimentTrend.neutral, colorIndex: 4 },
       { label: 'Negative', data: data.sentimentTrend.negative, colorIndex: 3 }
     ]);
+
+    // KOL Format Ratio Horizontal Bar
+    const kolFormatLabels = data.kolFormats.map(a => a.format);
+    C.createHorizontalBarChart('chartKolFormats', kolFormatLabels, [
+      { label: 'Current', data: data.kolFormats.map(a => a.ratio), colorIndex: 0 },
+      { label: 'Previous', data: data.kolFormats.map(a => a.prevRatio), colorIndex: 1 }
+    ]);
+
+    // KOL Format Trend (line chart)
+    C.createLineChart('chartKolFormatTrend', weeks,
+      data.kolFormatsTrend.map(function(item, i) {
+        return { label: item.format, data: item.data, colorIndex: i };
+      })
+    );
 
     // C1: Horizontal bar — axis correlations
     C.createHorizontalBarChart('chartC1', corr.c1.axes, [
@@ -234,7 +329,7 @@ window.ContentAnalysisPage = {
   // -------------------------------------------------------------------------
   _scorecard(label, value, change) {
     const cls = change >= 0 ? 'positive' : 'negative';
-    const arrow = change >= 0 ? '▲' : '▼';
+    const arrow = change >= 0 ? '\u25B2' : '\u25BC';
     return `
       <div class="scorecard">
         <div class="scorecard-header">${label}</div>
